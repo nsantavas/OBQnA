@@ -8,17 +8,16 @@ import re
 import pysbd
 
 from pandarallel import pandarallel
-pandarallel.initialize(nb_workers=8)
 
 
 class PDFParser:
-    def __init__(self, books_directory='books'):
+    def __init__(self, books_directory='books/'):
         self.directory = books_directory
 
     def parse(self):
         corpus = []
         for book in os.listdir(self.directory):
-            temp = tikaparser.from_file(path+book)['content']
+            temp = tikaparser.from_file(self.directory+book)['content']
             temp = " ".join(temp.split('Chapter I'))
             corpus.append(temp)
         return corpus
@@ -33,12 +32,13 @@ class PDFParser:
 
 class Passages:
     def __init__(self):
+        pandarallel.initialize(nb_workers=8)
         self.seg = pysbd.Segmenter(language="en", clean=False)
         pattern_sub = re.compile("\\{2}+")
         pattern_sub1 = re.compile("\"")
         pattern_sub2 = re.compile("\'")
-        pattern_find = re.compile(r'\w+')
-        self.patterns = [pattern_sub, pattern_sub1, pattern_sub2, pattern_find]
+        self.pattern_find = re.compile(r'\w+')
+        self.patterns = [pattern_sub, pattern_sub1, pattern_sub2]
 
     def split(self, doc_text, lim=60):
         """ Splits a passage to smaller passages with a number of tokens close to lim.
@@ -59,7 +59,7 @@ class Passages:
             while True:
                 s = segmented[i]
                 text = s
-                res = len(pattern_find.findall(s))  # Count tokens
+                res = len(self.pattern_find.findall(s))  # Count tokens
                 flag = True
 
                 # Concat until tokens are close to lim
@@ -70,7 +70,7 @@ class Passages:
                         break
                     text = s
                     s += segmented[i]
-                    res = len(pattern_find.findall(s))
+                    res = len(self.pattern_find.findall(s))
 
                 # Check if it didn't passed through the second while
                 if flag:
@@ -98,7 +98,7 @@ class Passages:
         Returns:
             List[Dict[str, Any]]: [description]
         """
-        df['text'] = df['text'].parallel_map(split_passage)
+        df['text'] = df['text'].parallel_map(self.split)
         data = df.explode('text').reset_index(drop=True)
 
         return data.to_dict('records')
