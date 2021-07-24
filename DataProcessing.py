@@ -1,4 +1,5 @@
 import os
+from typing import List, Dict
 
 import pandas as pd
 import tika
@@ -32,28 +33,70 @@ class PDFParser:
 
 class Passages:
     def __init__(self):
-        pandarallel.initialize(nb_workers=8)
+        self.nb_workers = os.cpu_count()
+        pandarallel.initialize(nb_workers=self.nb_workers)
         self.seg = pysbd.Segmenter(language="en", clean=False)
+
         pattern_sub = re.compile("\\{2}+")
         pattern_sub1 = re.compile("\"")
         pattern_sub2 = re.compile("\'")
         self.pattern_find = re.compile(r'\w+')
         self.patterns = [pattern_sub, pattern_sub1, pattern_sub2]
 
-    def split(self, doc_text, lim=60):
+    def chunker(self, text: str) -> List[Dict[str, int]]:
+        for pat in self.patterns:
+            text = pat.sub('', str(text))
+        text = text.encode("ascii", "ignore").decode()
+
+        segmented = self.seg.segment(text)
+        chunks_n = len(segmented)//(self.nb_workers - 1)
+        chunks = [segmented[i:i+chunks_n] for i in range(0, len(segmented), chunks_n)]
+        chunks_length = [{s: len(self.pattern_find.findall(s)) for s in segmented}
+                         for segmented in chunks]
+
+        return chunks_length
+
+    def combine(data: Dict[str, int], lim: int = 60) -> List[str]:
+        passages = []
+        temp = []
+        temp_value = 0
+        for key, value in data.items():
+            if not temp:
+                if value > lim:
+                    passages.append(key)
+                else:
+                    temp.append(key)
+                    temp_value = value
+            elif temp_value + value > lim+20:
+                passages.append(" ".join(temp))
+                temp = []
+                temp_value = 0
+                if value > lim:
+                    passages.append(key)
+                else:
+                    temp.append(key)
+                    temp_value = value
+                continue
+            elif temp_value + value > lim:
+                temp.append(key)
+                passages.append(" ".join(temp))
+                temp = []
+                temp_value = 0
+            else:
+                temp.append(key)
+                temp_value = 0
+        
+        return passages
+
+    def split(self, segmented: List[str], lim=60):
         """ Splits a passage to smaller passages with a number of tokens close to lim.
         Args:
-            corpus (str): [description]
+            segmented: List[str]: A chunk of sentences.
             lim (int, optional): Defaults to 60.
         Returns:
             List[str]:
         """
         passage_list = []
-        for pat in self.patterns:
-            doc_text = pat.sub('', str(doc_text))
-
-        doc_text = doc_text.encode("ascii", "ignore").decode()
-        segmented = self.seg.segment(doc_text)
         i = 0
         if segmented:
             while True:
