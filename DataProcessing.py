@@ -1,14 +1,14 @@
 import os
 from typing import List, Dict
 
+import nltk.data
 import pandas as pd
-import tika
-from tika import parser as tikaparser
-from gensim.parsing.preprocessing import strip_multiple_whitespaces
 import re
-import pysbd
-
+import tika
+from gensim.parsing.preprocessing import strip_multiple_whitespaces
+from nltk.tokenize import sent_tokenize
 from pandarallel import pandarallel
+from tika import parser as tikaparser
 
 
 class PDFParser:
@@ -35,7 +35,7 @@ class Passages:
     def __init__(self):
         self.nb_workers = os.cpu_count()
         pandarallel.initialize(nb_workers=self.nb_workers)
-        self.seg = pysbd.Segmenter(language="en", clean=False)
+        self.seg = nltk.data.load("tokenizers/punkt/PY3/english.pickle")
 
         pattern_sub = re.compile("\\{2}+")
         pattern_sub1 = re.compile("\"")
@@ -43,20 +43,20 @@ class Passages:
         self.pattern_find = re.compile(r'\w+')
         self.patterns = [pattern_sub, pattern_sub1, pattern_sub2]
 
-    def chunker(self, text: str) -> List[Dict[str, int]]:
+    def chunker(self, text: str) -> List[List[str]]:
         for pat in self.patterns:
             text = pat.sub('', str(text))
         text = text.encode("ascii", "ignore").decode()
 
-        segmented = self.seg.segment(text)
+        segmented = self.seg.tokenize(text)
         chunks_n = len(segmented)//(self.nb_workers - 1)
         chunks = [segmented[i:i+chunks_n] for i in range(0, len(segmented), chunks_n)]
-        chunks_length = [{s: len(self.pattern_find.findall(s)) for s in segmented}
-                         for segmented in chunks]
 
-        return chunks_length
+        return chunks
 
-    def combine(data: Dict[str, int], lim: int = 60) -> List[str]:
+    def combine(self, data: List[str], lim: int = 60, upper_lim: int = None) -> List[str]:
+        data = {s: len(self.pattern_find.findall(s)) for s in data}
+        upper_lim = upper_lim or int(lim*1.2)
         passages = []
         temp = []
         temp_value = 0
@@ -67,7 +67,7 @@ class Passages:
                 else:
                     temp.append(key)
                     temp_value = value
-            elif temp_value + value > lim+20:
+            elif temp_value + value > upper_lim:
                 passages.append(" ".join(temp))
                 temp = []
                 temp_value = 0
@@ -76,7 +76,6 @@ class Passages:
                 else:
                     temp.append(key)
                     temp_value = value
-                continue
             elif temp_value + value > lim:
                 temp.append(key)
                 passages.append(" ".join(temp))
@@ -84,55 +83,9 @@ class Passages:
                 temp_value = 0
             else:
                 temp.append(key)
-                temp_value = 0
+                temp_value += value
         
         return passages
-
-    def split(self, segmented: List[str], lim=60):
-        """ Splits a passage to smaller passages with a number of tokens close to lim.
-        Args:
-            segmented: List[str]: A chunk of sentences.
-            lim (int, optional): Defaults to 60.
-        Returns:
-            List[str]:
-        """
-        passage_list = []
-        i = 0
-        if segmented:
-            while True:
-                s = segmented[i]
-                text = s
-                res = len(self.pattern_find.findall(s))  # Count tokens
-                flag = True
-
-                # Concat until tokens are close to lim
-                while res < lim:
-                    flag = False
-                    i += 1
-                    if i >= len(segmented):
-                        break
-                    text = s
-                    s += segmented[i]
-                    res = len(self.pattern_find.findall(s))
-
-                # Check if it didn't passed through the second while
-                if flag:
-                    i += 1
-
-                # Check the last occurance
-                if i >= len(segmented):
-                    if res < lim or flag:
-                        passage_list.append(s.strip())
-                        break
-                    passage_list.append(text.strip())
-                    passage_list.append(segmented[i-1].strip())
-                    break
-
-                passage_list.append(text.strip())
-        else:
-            passage_list.append('z')
-
-        return passage_list
 
     def df2passages(self, df):
         """ Transforms DataFrame with content to list of dictionary with the content in passages.
@@ -141,7 +94,9 @@ class Passages:
         Returns:
             List[Dict[str, Any]]: [description]
         """
-        df['text'] = df['text'].parallel_map(self.split)
-        data = df.explode('text').reset_index(drop=True)
+        df['text'] = df['text'].parallel_apply(self.chunker)
+        df = df.explode('text').reset_index(drop=True)
+        df["text"] = df["text"].parallel_apply(self.combine)
+        df = df.explode("text").reset_index(drop=True)
 
-        return data.to_dict('records')
+        return df.to_dict('records')
