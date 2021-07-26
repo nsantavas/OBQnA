@@ -1,0 +1,13 @@
+-f https://download.pytorch.org/whl/torch_stable.html
+faiss-cpu>=1.6.3,<1.7.1
+fastapi
+gunicorn
+httptools
+numpy
+pandarallel
+pandas
+pysbd
+torch==1.8.1+cu111
+tqdm
+uvicorn
+uvloop
