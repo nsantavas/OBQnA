@@ -6,46 +6,46 @@ import pandas as pd
 import re
 import tika
 from gensim.parsing.preprocessing import strip_multiple_whitespaces
-from nltk.tokenize import sent_tokenize
+from nltk.tokenize.punkt import PunktSentenceTokenizer
 from pandarallel import pandarallel
 from tika import parser as tikaparser
 
 
 class PDFParser:
-    def __init__(self, books_directory='books/'):
+    def __init__(self, books_directory: str = "books/"):
         self.directory = books_directory
 
-    def parse(self):
+    def parse(self) -> List[str]:
         corpus = []
         for book in os.listdir(self.directory):
-            temp = tikaparser.from_file(self.directory+book)['content']
-            temp = " ".join(temp.split('Chapter I'))
+            temp = tikaparser.from_file(self.directory+book)["content"]
+            temp = " ".join(temp.split("Chapter I"))
             corpus.append(temp)
         return corpus
 
-    def clean(self, corpus):
-
+    def clean(self, corpus: List[str]) -> pd.DataFrame:
         corpus = [strip_multiple_whitespaces(n) for n in corpus]
         corpus = [n.encode("ascii", "ignore").decode() for n in corpus]
-        corpus = pd.DataFrame({'text': corpus})
+        corpus = pd.DataFrame({"text": corpus})
         return corpus
 
 
 class Passages:
     def __init__(self):
-        self.nb_workers = os.cpu_count()
-        pandarallel.initialize(nb_workers=self.nb_workers)
-        self.seg = nltk.data.load("tokenizers/punkt/PY3/english.pickle")
+        self.nb_workers: int = os.cpu_count()
+        self.seg: PunktSentenceTokenizer = nltk.data.load("tokenizers/punkt/PY3/english.pickle")
 
-        pattern_sub = re.compile("\\{2}+")
-        pattern_sub1 = re.compile("\"")
-        pattern_sub2 = re.compile("\'")
-        self.pattern_find = re.compile(r'\w+')
-        self.patterns = [pattern_sub, pattern_sub1, pattern_sub2]
+        pattern_sub: re.Pattern = re.compile("\\{2}+")
+        pattern_sub1: re.Pattern = re.compile("\"")
+        pattern_sub2: re.Pattern = re.compile("\'")
+        self.pattern_find: re.Pattern = re.compile(r"\w+")
+        self.patterns: List[re.Pattern] = [pattern_sub, pattern_sub1, pattern_sub2]
+
+        pandarallel.initialize(nb_workers=self.nb_workers)
 
     def chunker(self, text: str) -> List[List[str]]:
         for pat in self.patterns:
-            text = pat.sub('', str(text))
+            text = pat.sub("", str(text))
         text = text.encode("ascii", "ignore").decode()
 
         segmented = self.seg.tokenize(text)
@@ -87,16 +87,19 @@ class Passages:
         
         return passages
 
-    def df2passages(self, df):
+    def df2passages(self, df: pd.DataFrame) -> List[Dict[str, str]]:
         """ Transforms DataFrame with content to list of dictionary with the content in passages.
         Args:
             df (DataFrame): [description]
         Returns:
             List[Dict[str, Any]]: [description]
         """
-        df['text'] = df['text'].parallel_apply(self.chunker)
-        df = df.explode('text').reset_index(drop=True)
+        df["text"] = df["text"].parallel_apply(self.chunker)
+        df = df.explode("text").reset_index(drop=True)
         df["text"] = df["text"].parallel_apply(self.combine)
         df = df.explode("text").reset_index(drop=True)
 
-        return df.to_dict('records')
+        corpus = df.to_dict("records")
+        corpus = [{k:str(v) for k, v in corp.items()} for corp in corpus]
+
+        return corpus
