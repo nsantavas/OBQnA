@@ -89,10 +89,12 @@ class Passages:
 
     def df2passages(self, df: pd.DataFrame) -> List[Dict[str, str]]:
         """ Transforms DataFrame with content to list of dictionary with the content in passages.
-        Args:
-            df (DataFrame): [description]
-        Returns:
-            List[Dict[str, Any]]: [description]
+
+        :param df: DataFrame containing all the books.
+        :type df: pd.DataFrame
+
+        :return: List of Dicts
+        :rtype: List
         """
         df["text"] = df["text"].parallel_apply(self.chunker)
         df = df.explode("text").reset_index(drop=True)

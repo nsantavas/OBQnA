@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from app.obqna.searcher import Searcher
+from obqna.searcher import Searcher
 
 
 class QuestionAnswering:
