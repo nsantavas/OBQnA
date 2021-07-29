@@ -1,7 +1,7 @@
 Documentation
 =============
 
-obqna.process module
+obqna.process
 --------------------
 
 ``PDFParser``
@@ -21,7 +21,7 @@ obqna.process module
    :show-inheritance:
 
 
-obqna.qa module
+obqna.qa
 ---------------
 
 ``QuestionAnswering``
@@ -32,7 +32,7 @@ obqna.qa module
    :undoc-members:
    :show-inheritance:
 
-obqna.searcher module
+obqna.searcher
 ---------------------
 
 ``SearcherBase``
