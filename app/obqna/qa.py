@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from app.obqna.searcher import Searcher
+from obqna.searcher import Searcher
 
 
 class QuestionAnswering:
@@ -41,6 +41,15 @@ class QuestionAnswering:
 
 
     def vectorize(self, corpus: pd.DataFrame, batch_size: int = 16) -> pd.DataFrame:
+        """ Vectorizes context passages
+
+        :param corpus: DataFrame containing passages of text
+        :type corpus: pd.DataFrame
+        :param batch_size: Batch size of the input ot the model, defaults to 16
+        :type batch_size: int, optional
+        :return: DataFrame containing passages and their vectors
+        :rtype: pd.DataFrame
+        """        
         corpus = [n["text"] for n in corpus]
         vectors = []
 
@@ -61,9 +70,23 @@ class QuestionAnswering:
         return lookup
 
     def save(self, dataframe: pd.DataFrame, path="context.pickle") -> None:
+        """ Save DataFrame to path
+
+        :param dataframe: DataFrame
+        :type dataframe: pd.DataFrame
+        :param path: Location to save DataFrame to, defaults to "context.pickle"
+        :type path: str, optional
+        """        
         dataframe.to_pickle(path)
 
     def vectorize_question(self, question: str) -> np.array:
+        """ Vectorizes a question querry
+
+        :param question:
+        :type question: str
+        :return: Vector of question
+        :rtype: np.array
+        """        
         vector = self.question_tokenizer(question, return_tensors="pt")[
             "input_ids"].to("cuda")
         output = self.question_model(
@@ -74,6 +97,15 @@ class QuestionAnswering:
                 corpus: pd.DataFrame,
                 save_dataset: bool = True,
                 vectorized_corpus_path: str = "context.pickle") -> None:
+        """[summary]
+
+        :param corpus: DataFrame containing passages of text
+        :type corpus: pd.DataFrame
+        :param save_dataset: Wether to save DataFrame or not, defaults to True
+        :type save_dataset: bool, optional
+        :param vectorized_corpus_path: Location to save the vectorized corpus, defaults to "context.pickle"
+        :type vectorized_corpus_path: str, optional
+        """        
         if os.path.isfile(vectorized_corpus_path):
             self.dataframe = pd.read_pickle(vectorized_corpus_path)
         else:
@@ -85,6 +117,13 @@ class QuestionAnswering:
         print("Preparation completed")
 
     def ask(self, question: str) -> Dict[str, Any]:
+        """ Answers a question
+
+        :param question:
+        :type question: str
+        :return: A dict containing 'score', 'start', 'end' and 'answer'
+        :rtype: Dict[str, Any]
+        """        
         q = self.vectorize_question(question)
         indices = self.searcher.rank_passages(q)
         context = " ".join([self.dataframe["passages"][n] for n in indices])
