@@ -20,18 +20,21 @@ To install simply do ``pip install -r requirements.tx``
 
 ----------
 
-# Python code example
+Python code example
+------------
 
 
 <h3 align="center">We are using J. R. R. Tolkien's Lord Of The Rings Trilogy and the Hobbit for the following example.</p></h3>
 
 </p>
 
-<img src="images/lotr.png" height="250" class="centerImage"> 
+ <center><img src="images/lotr.png" height="250" class="center"></center>
 
 </p>
 
 For more detailed explanation please read the <a href="https://nsantavas.github.io/OBQnA/">Documentation</a>.
+
+------------
 
 <h3>Parsing PDFs and performing some basic text cleaning</p></h3>
 
