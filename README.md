@@ -18,8 +18,8 @@ Python code example
 <p>
 
 ``` python
-from app.obqna.process import PDFParser, Passages
-from app.obqna.qa import QuestionAnswering
+from obqna.process import PDFParser, Passages
+from obqna.qa import QuestionAnswering
 
 parser = PDFParser("../books/")
 books = parser.parse()
