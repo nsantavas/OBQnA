@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Documentation &mdash; OBQnA 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> OBQnA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#obqna-process">obqna.process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pdfparser"><code class="docutils literal notranslate"><span class="pre">PDFParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#passages"><code class="docutils literal notranslate"><span class="pre">Passages</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#obqna-qa">obqna.qa</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#questionanswering"><code class="docutils literal notranslate"><span class="pre">QuestionAnswering</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#obqna-searcher">obqna.searcher</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searcherbase"><code class="docutils literal notranslate"><span class="pre">SearcherBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searcher"><code class="docutils literal notranslate"><span class="pre">Searcher</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searcherfaiss"><code class="docutils literal notranslate"><span class="pre">SearcherFaiss</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searcherannoy"><code class="docutils literal notranslate"><span class="pre">SearcherAnnoy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searcherscann"><code class="docutils literal notranslate"><span class="pre">SearcherScaNN</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">OBQnA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/obqna.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="obqna-process">
+<h2>obqna.process<a class="headerlink" href="#obqna-process" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pdfparser">
+<h3><code class="docutils literal notranslate"><span class="pre">PDFParser</span></code><a class="headerlink" href="#pdfparser" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.process.PDFParser">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.process.</span></span><span class="sig-name descname"><span class="pre">PDFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">books_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'books/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/obqna/process.html#PDFParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.PDFParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.process.PDFParser.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="_modules/obqna/process.html#PDFParser.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.PDFParser.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies basic text cleaning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>corpus</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list wiht the parsed text of the pdf(s)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A DataFrame with a single column named “text” containing the cleaned input</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.process.PDFParser.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/process.html#PDFParser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.PDFParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the raw pdf(s) provided in the books_directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list wiht the parsed text of the pdf(s)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="passages">
+<h3><code class="docutils literal notranslate"><span class="pre">Passages</span></code><a class="headerlink" href="#passages" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.process.Passages">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.process.</span></span><span class="sig-name descname"><span class="pre">Passages</span></span><a class="reference internal" href="_modules/obqna/process.html#Passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.Passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.process.Passages.chunker">
+<span class="sig-name descname"><span class="pre">chunker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/process.html#Passages.chunker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.Passages.chunker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Brakes a text into passages for parallelization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – A single text</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A List containing chunks of the input text, where chunks are lists of sentences</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.process.Passages.combine">
+<span class="sig-name descname"><span class="pre">combine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_lim</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/process.html#Passages.combine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.Passages.combine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines A list of sentences to passages of approximate num of words close to <cite>lim</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list containing sentences</p></li>
+<li><p><strong>lim</strong> (<em>int</em><em>, </em><em>optional</em>) – The lim that num of words should approximate, defaults to 60</p></li>
+<li><p><strong>upper_lim</strong> (<em>int</em><em>, </em><em>optional</em>) – The max lim that num of words should not exceed, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of passages</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.process.Passages.df2passages">
+<span class="sig-name descname"><span class="pre">df2passages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/process.html#Passages.df2passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.process.Passages.df2passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms DataFrame containing text(s) to a list of dicts containing passages of the text(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame containing all the text(s)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of dicts containing passages of the text(s)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Dict[str, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="obqna-qa">
+<h2>obqna.qa<a class="headerlink" href="#obqna-qa" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="questionanswering">
+<h3><code class="docutils literal notranslate"><span class="pre">QuestionAnswering</span></code><a class="headerlink" href="#questionanswering" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.qa.QuestionAnswering">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.qa.</span></span><span class="sig-name descname"><span class="pre">QuestionAnswering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'faiss'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/obqna/qa.html#QuestionAnswering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.qa.QuestionAnswering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.qa.QuestionAnswering.ask">
+<span class="sig-name descname"><span class="pre">ask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/qa.html#QuestionAnswering.ask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.qa.QuestionAnswering.ask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Answers a question</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>question</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dict containing ‘score’, ‘start’, ‘end’ and ‘answer’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.qa.QuestionAnswering.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorized_corpus_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'context.pickle'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/qa.html#QuestionAnswering.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.qa.QuestionAnswering.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages of text</p></li>
+<li><p><strong>save_dataset</strong> (<em>bool</em><em>, </em><em>optional</em>) – Wether to save DataFrame or not, defaults to True</p></li>
+<li><p><strong>vectorized_corpus_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Location to save the vectorized corpus, defaults to “context.pickle”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.qa.QuestionAnswering.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'context.pickle'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/qa.html#QuestionAnswering.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.qa.QuestionAnswering.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save DataFrame to path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – DataFrame</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – Location to save DataFrame to, defaults to “context.pickle”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.qa.QuestionAnswering.vectorize">
+<span class="sig-name descname"><span class="pre">vectorize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="_modules/obqna/qa.html#QuestionAnswering.vectorize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.qa.QuestionAnswering.vectorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vectorizes context passages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages of text</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size of the input ot the model, defaults to 16</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame containing passages and their vectors</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.qa.QuestionAnswering.vectorize_question">
+<span class="sig-name descname"><span class="pre">vectorize_question</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="_modules/obqna/qa.html#QuestionAnswering.vectorize_question"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.qa.QuestionAnswering.vectorize_question" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vectorizes a question querry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>question</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Vector of question</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="obqna-searcher">
+<h2>obqna.searcher<a class="headerlink" href="#obqna-searcher" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="searcherbase">
+<h3><code class="docutils literal notranslate"><span class="pre">SearcherBase</span></code><a class="headerlink" href="#searcherbase" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.searcher.</span></span><span class="sig-name descname"><span class="pre">SearcherBase</span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherBase.passages_indexing">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">passages_indexing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherBase.passages_indexing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherBase.passages_indexing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates indices for the vectors of the passages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages and their vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherBase.rank_passages">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">rank_passages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorized_question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherBase.rank_passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherBase.rank_passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs vector similarity search to retrieve the most relevant passages to a question</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectorized_question</strong> (<em>np.array</em>) – Vector of question</p></li>
+<li><p><strong>sorted_first</strong> (<em>int</em><em>, </em><em>optional</em>) – Num of passages indices to return, defaults to 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Passages indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="searcher">
+<h3><code class="docutils literal notranslate"><span class="pre">Searcher</span></code><a class="headerlink" href="#searcher" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.searcher.Searcher">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.searcher.</span></span><span class="sig-name descname"><span class="pre">Searcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'faiss'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/obqna/searcher.html#Searcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.Searcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#obqna.searcher.SearcherBase" title="obqna.searcher.SearcherBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">obqna.searcher.SearcherBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.Searcher.passages_indexing">
+<span class="sig-name descname"><span class="pre">passages_indexing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#Searcher.passages_indexing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.Searcher.passages_indexing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates indices for the vectors of the passages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages and their vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.Searcher.rank_passages">
+<span class="sig-name descname"><span class="pre">rank_passages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorized_question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#Searcher.rank_passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.Searcher.rank_passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs vector similarity search to retrieve the most relevant passages to a question</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectorized_question</strong> (<em>np.array</em>) – Vector of question</p></li>
+<li><p><strong>sorted_first</strong> (<em>int</em><em>, </em><em>optional</em>) – Num of passages indices to return, defaults to 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Passages indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="searcherfaiss">
+<h3><code class="docutils literal notranslate"><span class="pre">SearcherFaiss</span></code><a class="headerlink" href="#searcherfaiss" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherFaiss">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.searcher.</span></span><span class="sig-name descname"><span class="pre">SearcherFaiss</span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherFaiss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherFaiss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#obqna.searcher.SearcherBase" title="obqna.searcher.SearcherBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">obqna.searcher.SearcherBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherFaiss.passages_indexing">
+<span class="sig-name descname"><span class="pre">passages_indexing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherFaiss.passages_indexing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherFaiss.passages_indexing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates indices for the vectors of the passages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages and their vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherFaiss.rank_passages">
+<span class="sig-name descname"><span class="pre">rank_passages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorized_question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherFaiss.rank_passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherFaiss.rank_passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs vector similarity search to retrieve the most relevant passages to a question</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectorized_question</strong> (<em>np.array</em>) – Vector of question</p></li>
+<li><p><strong>sorted_first</strong> (<em>int</em><em>, </em><em>optional</em>) – Num of passages indices to return, defaults to 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Passages indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="searcherannoy">
+<h3><code class="docutils literal notranslate"><span class="pre">SearcherAnnoy</span></code><a class="headerlink" href="#searcherannoy" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherAnnoy">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.searcher.</span></span><span class="sig-name descname"><span class="pre">SearcherAnnoy</span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherAnnoy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherAnnoy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#obqna.searcher.SearcherBase" title="obqna.searcher.SearcherBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">obqna.searcher.SearcherBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherAnnoy.passages_indexing">
+<span class="sig-name descname"><span class="pre">passages_indexing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherAnnoy.passages_indexing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherAnnoy.passages_indexing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates indices for the vectors of the passages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages and their vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherAnnoy.rank_passages">
+<span class="sig-name descname"><span class="pre">rank_passages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorized_question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherAnnoy.rank_passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherAnnoy.rank_passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs vector similarity search to retrieve the most relevant passages to a question</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectorized_question</strong> (<em>np.array</em>) – Vector of question</p></li>
+<li><p><strong>sorted_first</strong> (<em>int</em><em>, </em><em>optional</em>) – Num of passages indices to return, defaults to 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Passages indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="searcherscann">
+<h3><code class="docutils literal notranslate"><span class="pre">SearcherScaNN</span></code><a class="headerlink" href="#searcherscann" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherScaNN">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">obqna.searcher.</span></span><span class="sig-name descname"><span class="pre">SearcherScaNN</span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherScaNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherScaNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#obqna.searcher.SearcherBase" title="obqna.searcher.SearcherBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">obqna.searcher.SearcherBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherScaNN.passages_indexing">
+<span class="sig-name descname"><span class="pre">passages_indexing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherScaNN.passages_indexing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherScaNN.passages_indexing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates indices for the vectors of the passages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – DataFrame containing passages and their vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="obqna.searcher.SearcherScaNN.rank_passages">
+<span class="sig-name descname"><span class="pre">rank_passages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorized_question</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/obqna/searcher.html#SearcherScaNN.rank_passages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obqna.searcher.SearcherScaNN.rank_passages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs vector similarity search to retrieve the most relevant passages to a question</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectorized_question</strong> (<em>np.array</em>) – Vector of question</p></li>
+<li><p><strong>sorted_first</strong> (<em>int</em><em>, </em><em>optional</em>) – Num of passages indices to return, defaults to 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Passages indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Nicholas Santavas, Kyriakos Toulgaridis, Nikos Nalmpantis.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
