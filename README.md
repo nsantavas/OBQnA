@@ -7,13 +7,15 @@
 
 Install
 -------
-To install simply do "pip install -r requirements.txt"
+To install simply do ``pip install -r requirements.tx``
 
 * note: If you want to use GPU please install cuda
 
 <p>
+
 Python code example
 -------------------
+<p>
 
 ``` python
 from app.obqna.process import PDFParser, Passages
