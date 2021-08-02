@@ -5,6 +5,10 @@
     <p>An OpenBook Question 'n' Answer System</p>
 </h2>
 
+Introduction
+------------
+`OBQnA` is a high-level OO Python package which aims to provide an easy and intuitive way of creating a OpenBook Question ‘n’ Answer system.
+
 Install
 -------
 To install simply do ``pip install -r requirements.tx``
