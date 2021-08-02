@@ -19,10 +19,10 @@ class PDFParser:
 
         :return: A list wiht the parsed text of the pdf(s)
         :rtype: List[str]
-        """        
+        """
         corpus = []
         for book in os.listdir(self.directory):
-            temp = tikaparser.from_file(self.directory+book)["content"]
+            temp = tikaparser.from_file(self.directory + book)["content"]
             temp = " ".join(temp.split("Chapter I"))
             corpus.append(temp)
         return corpus
@@ -34,7 +34,7 @@ class PDFParser:
         :type corpus: List[str]
         :return: A DataFrame with a single column named "text" containing the cleaned input
         :rtype: pd.DataFrame
-        """        
+        """
         corpus = [strip_multiple_whitespaces(n) for n in corpus]
         corpus = [n.encode("ascii", "ignore").decode() for n in corpus]
         corpus = pd.DataFrame({"text": corpus})
@@ -44,11 +44,13 @@ class PDFParser:
 class Passages:
     def __init__(self):
         self.nb_workers: int = os.cpu_count()
-        self.seg: PunktSentenceTokenizer = nltk.data.load("tokenizers/punkt/PY3/english.pickle")
+        self.seg: PunktSentenceTokenizer = nltk.data.load(
+            "tokenizers/punkt/PY3/english.pickle"
+        )
 
         pattern_sub: re.Pattern = re.compile("\\{2}+")
-        pattern_sub1: re.Pattern = re.compile("\"")
-        pattern_sub2: re.Pattern = re.compile("\'")
+        pattern_sub1: re.Pattern = re.compile('"')
+        pattern_sub2: re.Pattern = re.compile("'")
         self.pattern_find: re.Pattern = re.compile(r"\w+")
         self.patterns: List[re.Pattern] = [pattern_sub, pattern_sub1, pattern_sub2]
 
@@ -61,18 +63,22 @@ class Passages:
         :type text: str
         :return: A List containing chunks of the input text, where chunks are lists of sentences
         :rtype: List[List[str]]
-        """        
+        """
         for pat in self.patterns:
             text = pat.sub("", str(text))
         text = text.encode("ascii", "ignore").decode()
 
         segmented = self.seg.tokenize(text)
-        chunks_n = len(segmented)//(self.nb_workers - 1)
-        chunks = [segmented[i:i+chunks_n] for i in range(0, len(segmented), chunks_n)]
+        chunks_n = len(segmented) // (self.nb_workers - 1)
+        chunks = [
+            segmented[i : i + chunks_n] for i in range(0, len(segmented), chunks_n)
+        ]
 
         return chunks
 
-    def combine(self, data: List[str], lim: int = 60, upper_lim: int = None) -> List[str]:
+    def combine(
+        self, data: List[str], lim: int = 60, upper_lim: int = None
+    ) -> List[str]:
         """ Combines A list of sentences to passages of approximate num of words close to `lim`
 
         :param data: A list containing sentences
@@ -83,9 +89,9 @@ class Passages:
         :type upper_lim: int, optional
         :return: List of passages
         :rtype: List[str]
-        """        
+        """
         data = {s: len(self.pattern_find.findall(s)) for s in data}
-        upper_lim = upper_lim or int(lim*1.2)
+        upper_lim = upper_lim or int(lim * 1.2)
         passages = []
         temp = []
         temp_value = 0
@@ -113,7 +119,7 @@ class Passages:
             else:
                 temp.append(key)
                 temp_value += value
-        
+
         return passages
 
     def df2passages(self, df: pd.DataFrame) -> List[Dict[str, str]]:
@@ -130,6 +136,6 @@ class Passages:
         df = df.explode("text").reset_index(drop=True)
 
         corpus = df.to_dict("records")
-        corpus = [{k:str(v) for k, v in corp.items()} for corp in corpus]
+        corpus = [{k: str(v) for k, v in corp.items()} for corp in corpus]
 
         return corpus

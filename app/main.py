@@ -8,9 +8,11 @@ passages = Passages()
 parser = PDFParser()
 qa = QuestionAnswering()
 
+
 @app.get("/", status_code=200)
 async def root():
     return {"message": "OK"}
+
 
 @app.get("/", status_code=200)
 async def corpus_parser():
@@ -20,6 +22,7 @@ async def corpus_parser():
         [type]: [description]
     """
     return {"message": "OK"}
+
 
 @app.get("/", status_code=200)
 async def question_answering():

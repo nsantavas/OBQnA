@@ -3,12 +3,12 @@ from typing import Any, Dict, List
 
 import torch
 from transformers import (
-        AutoTokenizer,
-        AutoModel,
-        AutoModelForQuestionAnswering,
-        DPRQuestionEncoder,
-        DPRContextEncoder,
-        pipeline,
+    AutoTokenizer,
+    AutoModel,
+    AutoModelForQuestionAnswering,
+    DPRQuestionEncoder,
+    DPRContextEncoder,
+    pipeline,
 )
 
 import faiss
@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from obqna.searcher import Searcher
+from .searcher import Searcher
 
 
 class QuestionAnswering:
@@ -28,17 +28,22 @@ class QuestionAnswering:
         answer_model_name = "deepset/roberta-base-squad2"
 
         self.context_tokenizer = AutoTokenizer.from_pretrained(context_model_name)
-        self.context_model = DPRContextEncoder.from_pretrained(context_model_name).to(self.device)
+        self.context_model = DPRContextEncoder.from_pretrained(context_model_name).to(
+            self.device
+        )
 
         self.question_tokenizer = AutoTokenizer.from_pretrained(question_model_name)
-        self.question_model = DPRQuestionEncoder.from_pretrained(question_model_name).to(self.device)
+        self.question_model = DPRQuestionEncoder.from_pretrained(
+            question_model_name
+        ).to(self.device)
 
         answer_model = AutoModelForQuestionAnswering.from_pretrained(answer_model_name)
         answer_tokenizer = AutoTokenizer.from_pretrained(answer_model_name)
 
-        self.nlp = pipeline("question-answering", model=answer_model, tokenizer=answer_tokenizer)
+        self.nlp = pipeline(
+            "question-answering", model=answer_model, tokenizer=answer_tokenizer
+        )
         self.searcher = Searcher(searcher_type)
-
 
     def vectorize(self, corpus: pd.DataFrame, batch_size: int = 16) -> pd.DataFrame:
         """ Vectorizes context passages
@@ -49,19 +54,20 @@ class QuestionAnswering:
         :type batch_size: int, optional
         :return: DataFrame containing passages and their vectors
         :rtype: pd.DataFrame
-        """        
+        """
         corpus = [n["text"] for n in corpus]
         vectors = []
 
         with torch.no_grad():
             for i in tqdm(range(0, len(corpus), batch_size)):
                 encoded_dict = self.context_tokenizer(
-                    corpus[i:i+batch_size],
+                    corpus[i : i + batch_size],
                     max_length=256,
                     padding="max_length",
                     truncation=True,
                     return_attention_mask=True,
-                    return_tensors="pt").to("cuda")
+                    return_tensors="pt",
+                ).to("cuda")
 
                 outputs = self.context_model(**encoded_dict)
                 vectors.extend(outputs[0].detach().to("cpu").numpy())
@@ -76,7 +82,7 @@ class QuestionAnswering:
         :type dataframe: pd.DataFrame
         :param path: Location to save DataFrame to, defaults to "context.pickle"
         :type path: str, optional
-        """        
+        """
         dataframe.to_pickle(path)
 
     def vectorize_question(self, question: str) -> np.array:
@@ -86,17 +92,19 @@ class QuestionAnswering:
         :type question: str
         :return: Vector of question
         :rtype: np.array
-        """        
-        vector = self.question_tokenizer(question, return_tensors="pt")[
-            "input_ids"].to("cuda")
-        output = self.question_model(
-            vector).pooler_output.detach().to("cpu").numpy()
+        """
+        vector = self.question_tokenizer(question, return_tensors="pt")["input_ids"].to(
+            "cuda"
+        )
+        output = self.question_model(vector).pooler_output.detach().to("cpu").numpy()
         return output
 
-    def prepare(self,
-                corpus: pd.DataFrame,
-                save_dataset: bool = True,
-                vectorized_corpus_path: str = "context.pickle") -> None:
+    def prepare(
+        self,
+        corpus: pd.DataFrame,
+        save_dataset: bool = True,
+        vectorized_corpus_path: str = "context.pickle",
+    ) -> None:
         """[summary]
 
         :param corpus: DataFrame containing passages of text
@@ -105,7 +113,7 @@ class QuestionAnswering:
         :type save_dataset: bool, optional
         :param vectorized_corpus_path: Location to save the vectorized corpus, defaults to "context.pickle"
         :type vectorized_corpus_path: str, optional
-        """        
+        """
         if os.path.isfile(vectorized_corpus_path):
             self.dataframe = pd.read_pickle(vectorized_corpus_path)
         else:
@@ -123,14 +131,11 @@ class QuestionAnswering:
         :type question: str
         :return: A dict containing 'score', 'start', 'end' and 'answer'
         :rtype: Dict[str, Any]
-        """        
+        """
         q = self.vectorize_question(question)
         indices = self.searcher.rank_passages(q)
         context = " ".join([self.dataframe["passages"][n] for n in indices])
-        qa_input = {
-            "question": question,
-            "context": context
-        }
+        qa_input = {"question": question, "context": context}
         result = self.nlp(qa_input)
 
         return result
